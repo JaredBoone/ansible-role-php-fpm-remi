@@ -10,6 +10,17 @@
 - yum:
     name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
     state: present
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version is version_compare('7.0', '<')
+
+- yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version is version_compare('7.0', '>=') and ansible_distribution_version is version_compare('8.0', '<')
+
+- yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+  when: ansible_distribution == 'CentOS' and ansible_distribution_version is version_compare('8.0', '>=')
 
 - import_role: 
     name: geerlingguy.repo-remi
@@ -23,7 +34,7 @@
     php_memory_limit: "512M"
     php_max_execution_time: "90"
     php_upload_max_filesize: "2048M"
-    php_version: '7.2'
+    php_version: '7.4'
     php_packages_state: "latest"
     php_packages: 
     - php
@@ -47,7 +58,7 @@
     - php-xml
     - php-fpm
     - php-pecl-imagick
-    php_enablerepo: "epel,remi-php72"
+    php_enablerepo: "epel,remi-php74"
     php_enable_php_fpm: true
     php_opcache_enable_cli: "1"
     php_opcache_interned_strings_buffer: "8"
